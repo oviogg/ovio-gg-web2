@@ -1,0 +1,13 @@
+{
+	"name": "com.ovio.integration",
+	"version": "1.0.0",
+	"displayName": "OviO Web2 Integration",
+	"description": "Integration package with OviO Gaming product",
+	"dependencies": {
+	},
+	"keywords": [ "OviO", "gaming", "integration" ],
+	"author": {
+		"name": "OviO",
+		"email": "support@ovio.gg"
+    }
+}
