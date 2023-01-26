@@ -5,6 +5,7 @@ This package introduces Web2 gaming Integration with OviO Gaming Ltd.
 
 ## Installation
 Using unity go to **Window** -> **PackageManager** -> **+** -> **Add package from Git Url**
+
 Paste this link:
 https://github.com/oviogg/ovio-gg-web2.git
 
