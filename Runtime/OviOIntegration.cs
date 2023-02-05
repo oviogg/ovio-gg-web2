@@ -12,7 +12,7 @@ namespace OviO.Integration
     {
         private readonly HttpClient _httpClient;
 
-        private Uri _baseUrl = new Uri($"https://prod.ovio.gg/api/gameIntegration/");
+        private Uri _baseUrl = new Uri($"http://localhost:60814/api/gameIntegration/");
 
         private string _devId;
 
@@ -39,7 +39,7 @@ namespace OviO.Integration
             };
 
             var signedTransactionDataResponse = await GetSignedTransactionDataResponseAsync();
-            if (signedTransactionDataResponse == null) 
+            if (!signedTransactionDataResponse.Success) 
             {
                 return new TransactionData()
                 {
@@ -144,6 +144,7 @@ namespace OviO.Integration
 
     public class SignedTransactionDataResponse
     {
+        public bool Success { get; set; }
         public string TransactionDataBase64String { get; set; }
         public string HashBase64String { get; set; }
         public string SignatureBase64String { get; set; }
