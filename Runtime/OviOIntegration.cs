@@ -12,7 +12,7 @@ namespace OviO.Integration
     {
         private readonly HttpClient _httpClient;
 
-        private Uri _baseUrl = new Uri($"http://localhost:60814/api/gameIntegration/");
+        private Uri _baseUrl = new Uri($"https://prod.ovio.gg/api/gameIntegration/");
 
         private string _devId;
 
