@@ -39,6 +39,14 @@ namespace OviO.Integration
             };
 
             var signedTransactionDataResponse = await GetSignedTransactionDataResponseAsync();
+            if (signedTransactionDataResponse == null) 
+            {
+                return new TransactionData()
+                {
+                    IsSuccess = false,
+                    Message = "An error occurred"
+                };
+            }
             var hashedTransactionDataResponse = Convert.FromBase64String(signedTransactionDataResponse.HashBase64String);
             var signature = Convert.FromBase64String(signedTransactionDataResponse.SignatureBase64String);
 
