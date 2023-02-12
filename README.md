@@ -1,57 +1,197 @@
-# OviO Integration SDK
-
+﻿# OviO Integration SDK
 ## Description
+
 This package introduces Web2 gaming Integration with OviO Gaming Ltd.
+The integration includes getting information from OviO regarding the amount that needs to be updated for certain user.
+
+
+**Note**: If you're adding your code to an editor file, you will need to create an .asmdef file and add an assembly reference to com.ovio.integration.
+  
 
 ## Installation
+
 Using unity go to **Window** -> **PackageManager** -> **+** -> **Add package from Git Url**
 
 Paste this link:
-https://github.com/oviogg/ovio-gg-web2.git
+[https://github.com/oviogg/ovio-gg-web2.git](https://github.com/oviogg/ovio-gg-web2.git)
 
 ## Usage
-### Initialization
+
+### OviOIntegration
+Use this class if you handle your deeplink processing on your own.
+
+#### Initializion
+In your MonoBehaviour file which handles deeplink processing initialize the OviOIntegration class in the Awake() or Start() function.
+
+```c#
+Using OviO.Integration;
+
+public class ExampleMonoBehaviour : MonoBehaviour {
+	private OviOIntegration ovioIntegration;
+	
+	public void Awake()
+	{
+		ovioIntegration = new OviOIntegration(<YOUR_OWN_DEV_ID>);
+	}
+}
 ```
-new OviOIntegration(string devId)
+
+**OR**
+```c#
+Using OviO.Integration;
+
+public class ExampleMonoBehaviour : MonoBehaviour {
+	private OviOIntegration ovioIntegration;
+	
+	public void Start()
+	{
+		ovioIntegration = new OviOIntegration(<YOUR_OWN_DEV_ID>);
+	}
+}
 ```
 
-Use the devId provided to you by OviO.
+**devId** is a *string* provided to you by OviO.
 
-### GetAmountAsync
-#### <u>Parameters</u>
-**url** *(string)* - the deeplink url that used to access your game
+> ⚠️  **Important:** Do not share this devId with anybody. This is your own game unique and secret identifier.
+  
+  #### GetAmount
+  GetAmount(*string url, Action\<TranscationData\> callback*) gets the deeplink to your application and a callback that handles the [TransactionData](#TransactionData) returned from the function.
+  
+  <u>Usage</u>
+  In your function that handles deeplink processing, call ovioIntegration.GetAmount with a callback that handles the return value of GetAmount (the *TransactionData* class)
+```c#
+Using OviO.Integration;
 
-#### <u>Returns</u>
+public class ExampleMonoBehaviour : MonoBehaviour {
+	private OviOIntegration ovioIntegration;
+	
+	public void HandleDeepLink(string link)
+	{
+		// Your own deeplink processing
+		
+		if (link.ToLower().Contains("ovio"))
+        {
+            ovioIntegration.GetAmount(link, HandleTransactionData);
+        }
+	}
 
-_CoinData class_
+	private void HandleTransactionData(TransactionData transactionData)
+	{
+		// Your own handling of transactionData
+	}
+}
+```
 
-+ **Amount**  *(int)* - total number of coins that need to be transfered to the gamer.
+### OviOIntegrationDeepLinkProcessing
+Use this class if you don't currently handle deeplink processing on your own and want OviO to handle it for you.
 
-+ **CoinName** *(string)* - the name of the currency that needs to be transfered to the gamer.
+#### Initializion
+In your MonoBehaviour file which handles deeplink processing initialize the OviOIntegrationDeepLinkProcessing class in the Awake() or Start() function.
 
-+ **IsSuccess** *(bool)* - indicates whether the call was successful or not.
+```c#
+Using OviO.Integration;
 
-+ **Message** *(string)* - on non-successful calls this will indicate the error.
+public class ExampleMonoBehaviour : MonoBehaviour {
+	private OviOIntegrationDeepLinkProcessing ovioIntegrationDeepLinkProcessing;
+	
+	public void Awake()
+	{
+		ovioIntegrationDeepLinkProcessing = new OviOIntegrationDeepLinkProcessing(<YOUR_OWN_DEV_ID>);
+		ovioIntegrationDeepLinkProcessing.RegisterCallback(HandleTransactionData);
+	}
+
+	private void HandleTransactionData(TransactionData transactionData)
+	{
+		// Your own handling of transactionData
+	}
+}
+```
+
+**OR**
+```c#
+Using OviO.Integration;
+
+public class ExampleMonoBehaviour : MonoBehaviour {
+	private OviOIntegrationDeepLinkProcessing ovioIntegrationDeepLinkProcessing;
+	
+	public void Start()
+	{
+		ovioIntegrationDeepLinkProcessing = new OviOIntegrationDeepLinkProcessing(<YOUR_OWN_DEV_ID>);
+		ovioIntegrationDeepLinkProcessing.RegisterCallback(HandleTransactionData);
+	}
+
+	private void HandleTransactionData(TransactionData transactionData)
+	{
+		/** Your own handling of transactionData
+		 For example:
+		 if (!transactionData.Success)
+		 {
+		     Debug.LogError($"OviOIntegration failed {transactionData.Message}");
+		 }
+		 else if (transactionData.CoinName != "<YOUR-GAME-COIN-NAME>")
+		 {
+		     // Handle not legal CoinName
+		 }
+		 else
+		 {
+			 // Transfer transactionData.Amount to gamer
+		 }
+		**/ 
+	}
+}
+```
+
+**devId** is a *string* provided to you by OviO.
+
+> ⚠️  **Important:** Do not share this devId with anybody. This is your own game unique and secret identifier.
+  
+  #### GetAmount
+  GetAmount(*string url, Action\<TranscationData\> callback*) gets the deeplink to your application and a callback that handles the [TransactionData](#TransactionData) returned from the function.
+  
+  <u>Usage</u>
+  In your function that handles deeplink processing, call ovioIntegration.GetAmount with a callback that handles the return value of GetAmount (the *TransactionData* class)
+```c#
+Using OviO.Integration;
+
+public class ExampleMonoBehaviour : MonoBehaviour {
+	private OviOIntegration ovioIntegration;
+	
+	public void HandleDeepLink(string link)
+	{
+		// Your own deeplink processing
+		
+		if (link.ToLower().Contains("ovio"))
+        {
+            ovioIntegration.GetAmount(link, HandleTransactionData);
+        }
+	}
+
+	private void HandleTransactionData(TransactionData transactionData)
+	{
+		/** Your own handling of transactionData
+		 For example:
+		 if (!transactionData.Success)
+		 {
+		     Debug.LogError($"OviOIntegration failed {transactionData.Message}");
+		 }
+		 else if (transactionData.CoinName != "<YOUR-GAME-COIN-NAME>")
+		 {
+		     // Handle not legal CoinName
+		 }
+		 else
+		 {
+			 // Transfer transactionData.Amount to gamer
+		 }
+		**/ 
+	}
+}
+```
 
 
 
-This is an asynchronus function to call OviO and get the coin data regarding the gamer transactions.
-
-### GetAmount
-#### <u>Parameters</u>
-**url** *(string)* - the deeplink url that used to access your game
-
-#### <u>Returns</u>
-
-_CoinData class_
-
-+ **Amount**  *(int)* - total number of coins that need to be transfered to the gamer.
-
-+ **CoinName** *(string)* - the name of the currency that needs to be transfered to the gamer.
-
-+ **IsSuccess** *(bool)* - indicates whether the call was successful or not.
-
-+ **Message** *(string)* - on non-successful calls this will indicate the error.
-
-
-This is a synchronus function to call OviO and get the coin data regarding the gamer transactions.
+<a name="TransactionData"></a>
+## TransactionData 
++  **Amount**  *(int)* - total number of coins that the gamer purchased in the transaction and need to be transferred to the gamer.
++  **CoinName**  *(string)* - the name of the currency that needs to be transferred to the gamer. Can be used to check legitimacy of the transaction.
++  **IsSuccess**  *(bool)* - indicates whether the call was successful or not. 
++  **Message**  *(string)* - on non-successful calls this will indicate the error.

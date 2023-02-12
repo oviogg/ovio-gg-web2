@@ -1,13 +1,19 @@
 {
-	"name": "com.ovio.integration",
-	"version": "1.0.0",
-	"displayName": "OviO Web2 Integration",
-	"description": "Integration package with OviO Gaming product",
-	"dependencies": {
-	},
-	"keywords": [ "OviO", "gaming", "integration" ],
-	"author": {
-		"name": "OviO",
-		"email": "support@ovio.gg"
-    }
+  "name": "com.ovio.integration",
+  "version": "1.0.1",
+  "displayName": "OviO Web2 Integration",
+  "description": "Integration package with OviO Gaming product",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "1.1.2"
+  },
+  "keywords": [
+    "OviO",
+    "gaming",
+    "integration"
+  ],
+  "author": {
+    "name": "OviO",
+    "email": "support@ovio.gg"
+  },
+  "unity": "2019.3"
 }
